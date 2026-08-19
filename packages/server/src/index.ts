@@ -19,9 +19,16 @@ import { settingsRouter } from "./routes/settings.js";
 import { networkRouter } from "./routes/network.js";
 
 async function main() {
+  console.log(`[startup] Node ${process.version}`);
+
   // Must finish before any route touches the DB — the Turso backend in
   // particular needs the schema created over the network before first use.
-  await ensureSchema();
+  try {
+    await ensureSchema();
+  } catch (err) {
+    console.error("[startup] ensureSchema() failed — the DB schema could not be created/verified:");
+    throw err;
+  }
 
   const app = express();
   app.use(cors());
