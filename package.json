@@ -1,0 +1,16 @@
+{
+  "name": "frc-scouting-app",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/shared",
+    "packages/server",
+    "packages/client"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev -w @frc-scout/server",
+    "dev:client": "npm run dev -w @frc-scout/client",
+    "build": "npm run build -w @frc-scout/shared && npm run build -w @frc-scout/server && npm run build -w @frc-scout/client",
+    "test": "npm run test -w @frc-scout/shared"
+  }
+}

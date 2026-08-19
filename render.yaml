@@ -1,0 +1,26 @@
+# Render Blueprint — lets you deploy the server with "New > Blueprint" pointed
+# at this repo, instead of configuring build/start commands by hand.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: frc-scouting-server
+    runtime: node
+    plan: free
+    # Runs from the repo root (this is an npm-workspaces monorepo) — builds the
+    # shared package first since the server imports its compiled output.
+    buildCommand: npm install && npm run build -w @frc-scout/shared && npm run build -w @frc-scout/server
+    startCommand: npm run start -w @frc-scout/server
+    healthCheckPath: /api/health
+    envVars:
+      # Render assigns PORT itself for web services — the app already reads
+      # process.env.PORT, so nothing to set here.
+      - key: TURSO_DATABASE_URL
+        sync: false # set after creating a database at turso.tech
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: TBA_API_KEY
+        sync: false # optional — see README "Getting event data in"
+      - key: TBA_EVENT_KEY
+        sync: false
+      - key: TBA_SYNC_INTERVAL_MINUTES
+        value: "3"
