@@ -18,6 +18,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Also targets the github-pages environment (same as the deploy job below)
+    # so this job can see API_URL whether it was added as a plain repository
+    # variable or as one scoped to the github-pages environment specifically —
+    # GitHub has both, and they're easy to mix up.
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +33,15 @@ jobs:
       - run: npm install
 
       - run: npm run build -w @frc-scout/shared
+
+      - name: Check API_URL is visible to this job
+        # API_URL is just a public server address, not a secret — safe to print.
+        run: |
+          if [ -z "${{ vars.API_URL }}" ]; then
+            echo "::warning::API_URL is empty in this job — the client will build with no backend configured. Check Settings > Secrets and variables > Actions > Variables (not Environments)."
+          else
+            echo "API_URL = ${{ vars.API_URL }}"
+          fi
 
       - name: Build client
         # VITE_BASE_PATH matches this project's Pages URL (username.github.io/repo-name/).
