@@ -14,6 +14,8 @@ export const config = {
     url: process.env.TURSO_DATABASE_URL?.trim() || null,
     authToken: process.env.TURSO_AUTH_TOKEN?.trim() || null,
   },
+  /** Shared password gating the Analyst section (dashboard, pick list, event setup). Unset = no gate. */
+  analystPassword: process.env.ANALYST_PASSWORD?.trim() || null,
   tba: {
     apiKey: process.env.TBA_API_KEY?.trim() || null,
     /** Event to keep in sync automatically, e.g. "2026caav". */
@@ -36,4 +38,8 @@ export function isTbaConfigured(): boolean {
  */
 export function isTursoConfigured(): boolean {
   return Boolean(config.turso.url && config.turso.authToken);
+}
+
+export function isAnalystAuthConfigured(): boolean {
+  return Boolean(config.analystPassword);
 }

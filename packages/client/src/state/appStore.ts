@@ -8,10 +8,13 @@ interface AppState {
   scoutName: string;
   serverUrl: string;
   activeEventKey: string;
+  /** Session token from the Analyst password gate. Null = not logged in (or no gate is configured). */
+  analystToken: string | null;
   setRole: (r: Role | null) => void;
   setScoutName: (n: string) => void;
   setServerUrl: (u: string) => void;
   setActiveEventKey: (k: string) => void;
+  setAnalystToken: (t: string | null) => void;
 }
 
 function defaultServerUrl(): string {
@@ -35,10 +38,12 @@ export const useAppStore = create<AppState>()(
       scoutName: "",
       serverUrl: defaultServerUrl(),
       activeEventKey: "",
+      analystToken: null,
       setRole: (role) => set({ role }),
       setScoutName: (scoutName) => set({ scoutName }),
       setServerUrl: (serverUrl) => set({ serverUrl: serverUrl.replace(/\/$/, "") }),
       setActiveEventKey: (activeEventKey) => set({ activeEventKey }),
+      setAnalystToken: (analystToken) => set({ analystToken }),
     }),
     { name: "frc-scout-app-state" }
   )

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   GAME_CONFIG,
+  chunkForQr,
   type Alliance,
   type AutonPath,
   type MatchScoutingEntry,
@@ -9,6 +10,7 @@ import {
 } from "@frc-scout/shared";
 import { Counter, LevelPicker, SkillSlider, Toggle } from "../components/FormControls";
 import { AutonPathMapper } from "../components/AutonPathMapper";
+import { QrCodeCarousel } from "../components/QrCode";
 import { useAppStore } from "../state/appStore";
 import { queueMatchScouting } from "../lib/db";
 import { flushOutbox } from "../lib/sync";
@@ -51,7 +53,8 @@ function MatchScoutingFormFields() {
   const [penalties, setPenalties] = useState(0);
   const [brokeDown, setBrokeDown] = useState(false);
   const [notes, setNotes] = useState("");
-  const [saved, setSaved] = useState(false);
+  const [savedEntry, setSavedEntry] = useState<MatchScoutingEntry | null>(null);
+  const [showQr, setShowQr] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -86,8 +89,47 @@ function MatchScoutingFormFields() {
 
     await queueMatchScouting(entry);
     flushOutbox();
-    setSaved(true);
-    setTimeout(() => navigate("/scout"), 700);
+    setSavedEntry(entry);
+  }
+
+  if (savedEntry) {
+    return (
+      <div className="mx-auto flex max-w-md flex-col gap-6 px-4 py-10 text-center">
+        <div>
+          <h1 className="text-xl font-bold text-emerald-400">Saved ✓</h1>
+          <p className="mt-1 text-slate-400">
+            Team {savedEntry.teamNumber}, match {savedEntry.matchId} — saved on this device and will sync
+            automatically once you're online.
+          </p>
+        </div>
+
+        {!showQr ? (
+          <button
+            type="button"
+            onClick={() => setShowQr(true)}
+            className="rounded-xl bg-slate-800 px-4 py-3 font-medium text-slate-200 hover:bg-slate-700"
+          >
+            📱 No signal? Show QR backup
+          </button>
+        ) : (
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <p className="text-sm text-slate-400">Have an analyst scan these, in order, with their phone.</p>
+            <QrCodeCarousel chunks={chunkForQr(savedEntry, "match", savedEntry.id)} />
+            <p className="text-xs text-slate-500">
+              This is just a faster stopgap — your full entry still syncs normally once this phone reconnects.
+            </p>
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => navigate("/scout")}
+          className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
+        >
+          Done — back to matches
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -173,7 +215,7 @@ function MatchScoutingFormFields() {
           type="submit"
           className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
         >
-          {saved ? "Saved ✓" : "Save entry"}
+          Save entry
         </button>
         <p className="text-center text-xs text-slate-500">
           Saves to this device immediately, even offline. Syncs to the server automatically when connected.

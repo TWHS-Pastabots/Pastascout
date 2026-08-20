@@ -50,6 +50,48 @@ created automatically.
    entries — even if their phone briefly loses wifi, entries queue locally
    (IndexedDB) and sync automatically once reconnected.
 
+## Offline QR backup (when a scout's phone has no signal at all)
+
+The normal offline story — save locally, sync when reconnected — assumes the
+phone *eventually* gets a connection. At a venue with genuinely no wifi/data
+reaching a scout's corner of the stands, that might not happen until the event's
+over. As a fallback, a saved entry can be relayed **phone-to-phone with no
+network involved at all**:
+
+1. After saving a match or pit entry, the scout taps **"📱 No signal? Show QR
+   backup"** — this shows the entry as one or more QR codes (large entries split
+   across several, auto-advancing).
+2. An analyst opens **Analysis → Receive via QR** and scans them with their
+   phone's camera.
+3. Each completed scan queues on the *analyst's* device and syncs to the server
+   the normal way — so it only needs connectivity to reach *someone*, not
+   specifically the scout who collected the data.
+
+This is a fast-path, not the authoritative copy — the scout's own phone still
+syncs the full entry normally once it reconnects, which just overwrites the
+QR-relayed version in place (both carry the same entry id). Photos on pit
+scouting entries are left out of the QR payload — even one compressed photo is
+far too large to fit in a scannable code — and sync over the network only, same
+as always.
+
+## Password-protecting the Analyst section
+
+By default, anyone who opens the app can see the dashboard, rankings, and pick
+list — fine for a private deployment, less fine if you're worried about
+opposing teams (or randoms) poking around at a competition. Set one env var in
+`packages/server/.env` (see `.env.example`) and every device has to enter a
+shared password once before the Analyst section loads at all:
+
+```
+ANALYST_PASSWORD=whatever-your-team-wants
+```
+
+Leave it blank and nothing changes — this is opt-in, same pattern as the Turso
+and TBA config. It's one shared password for the whole team, not individual
+accounts, and it only gates the Analyst side — scouts never see a login prompt
+at all, since match/pit scouting submission has to keep working with zero
+friction.
+
 ## Running from the cloud (between events)
 
 Deploy `packages/server` and `packages/client` (static build) to any host — the
@@ -92,7 +134,7 @@ over automatically.
 The ☰ button in the top-left opens a menu listing every section:
 
 - **Scouting** — Match scouting, Pit scouting
-- **Analysis** — Team stats, Pick list, Event setup, Join (QR)
+- **Analysis** — Team stats, Pick list, Event setup, Join (QR), Receive via QR
 - **App** — Settings, Switch role
 
 The menu shows all sections regardless of which role you're in. Picking a page

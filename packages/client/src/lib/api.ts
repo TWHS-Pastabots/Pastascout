@@ -1,12 +1,30 @@
 import type { Match, MatchScoutingEntry, PitScoutingEntry } from "@frc-scout/shared";
 import { useAppStore } from "../state/appStore";
 
+/** Thrown on a 401 from an Analyst-gated endpoint — a stale/invalid session token, not a generic failure. */
+export class AnalystAuthError extends Error {
+  constructor() {
+    super("Analyst login required");
+    this.name = "AnalystAuthError";
+  }
+}
+
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const serverUrl = useAppStore.getState().serverUrl;
+  const { serverUrl, analystToken, setAnalystToken } = useAppStore.getState();
   const res = await fetch(`${serverUrl}${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: {
+      "Content-Type": "application/json",
+      ...(analystToken ? { "X-Analyst-Token": analystToken } : {}),
+      ...init?.headers,
+    },
   });
+  if (res.status === 401) {
+    // Session token is stale (server restarted, or was never valid) — drop it
+    // so the Analyst gate re-prompts instead of silently failing every call.
+    setAnalystToken(null);
+    throw new AnalystAuthError();
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`${res.status} ${res.statusText}: ${body}`);
@@ -16,6 +34,13 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   health: () => apiFetch<{ ok: boolean }>("/api/health"),
+
+  analystAuthStatus: () => apiFetch<{ required: boolean }>("/api/auth/analyst-status"),
+  analystLogin: (password: string) =>
+    apiFetch<{ ok: boolean; token: string | null }>("/api/auth/analyst-login", {
+      method: "POST",
+      body: JSON.stringify({ password }),
+    }),
 
   events: () => apiFetch<{ eventKey: string; name: string; startDate?: string; endDate?: string }[]>("/api/events"),
   teams: () => apiFetch<{ teamNumber: number; name: string; tbaKey?: string }[]>("/api/teams"),

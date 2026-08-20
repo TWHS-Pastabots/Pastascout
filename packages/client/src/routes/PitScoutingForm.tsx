@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { PitScoutingEntry } from "@frc-scout/shared";
+import { chunkForQr, type PitScoutingEntry } from "@frc-scout/shared";
 import { useAppStore } from "../state/appStore";
 import { queuePitScouting } from "../lib/db";
 import { flushOutbox } from "../lib/sync";
 import { Toggle } from "../components/FormControls";
 import { PhotoUpload } from "../components/PhotoUpload";
+import { QrCodeCarousel } from "../components/QrCode";
 
 /** Keyed on the team so switching teams gives a blank form (see MatchScoutingForm). */
 export function PitScoutingForm() {
@@ -26,7 +27,8 @@ function PitScoutingFormFields() {
   const [fuelCapacity, setFuelCapacity] = useState("");
   const [photos, setPhotos] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
-  const [saved, setSaved] = useState(false);
+  const [savedEntry, setSavedEntry] = useState<PitScoutingEntry | null>(null);
+  const [showQr, setShowQr] = useState(false);
 
   function toggleClimbLevel(level: number) {
     setCanClimbLevels((levels) => (levels.includes(level) ? levels.filter((l) => l !== level) : [...levels, level]));
@@ -51,8 +53,56 @@ function PitScoutingFormFields() {
 
     await queuePitScouting(entry);
     flushOutbox();
-    setSaved(true);
-    setTimeout(() => navigate("/scout/pit"), 700);
+    setSavedEntry(entry);
+  }
+
+  if (savedEntry) {
+    // Photos are excluded from the QR payload — even one compressed photo is
+    // far too big for a scannable code. They still sync normally once this
+    // phone reconnects, same as everything else; the QR is just a fast-path.
+    const qrPayload = { ...savedEntry, photos: [] };
+
+    return (
+      <div className="mx-auto flex max-w-md flex-col gap-6 px-4 py-10 text-center">
+        <div>
+          <h1 className="text-xl font-bold text-emerald-400">Saved ✓</h1>
+          <p className="mt-1 text-slate-400">
+            Team {savedEntry.teamNumber} — saved on this device and will sync automatically once you're online.
+          </p>
+        </div>
+
+        {!showQr ? (
+          <button
+            type="button"
+            onClick={() => setShowQr(true)}
+            className="rounded-xl bg-slate-800 px-4 py-3 font-medium text-slate-200 hover:bg-slate-700"
+          >
+            📱 No signal? Show QR backup
+          </button>
+        ) : (
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <p className="text-sm text-slate-400">Have an analyst scan these, in order, with their phone.</p>
+            <QrCodeCarousel chunks={chunkForQr(qrPayload, "pit", savedEntry.id)} />
+            {savedEntry.photos.length > 0 && (
+              <p className="text-xs text-amber-400">
+                {savedEntry.photos.length} photo(s) aren't included — those sync over the network only.
+              </p>
+            )}
+            <p className="text-xs text-slate-500">
+              This is just a faster stopgap — your full entry still syncs normally once this phone reconnects.
+            </p>
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => navigate("/scout/pit")}
+          className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
+        >
+          Done — back to teams
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -141,7 +191,7 @@ function PitScoutingFormFields() {
           type="submit"
           className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
         >
-          {saved ? "Saved ✓" : "Save"}
+          Save
         </button>
       </form>
     </div>

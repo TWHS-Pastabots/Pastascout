@@ -63,6 +63,13 @@ const NAV_SECTIONS: { heading: string; items: NavItem[] }[] = [
         role: "analyst",
         icon: "📱",
       },
+      {
+        label: "Receive via QR",
+        description: "Scan a scout's offline backup code",
+        path: "/analyst/receive",
+        role: "analyst",
+        icon: "📷",
+      },
     ],
   },
 ];

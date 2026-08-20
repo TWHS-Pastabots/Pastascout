@@ -17,6 +17,8 @@ import { statsRouter } from "./routes/stats.js";
 import { pickListRouter } from "./routes/pickList.js";
 import { settingsRouter } from "./routes/settings.js";
 import { networkRouter } from "./routes/network.js";
+import { authRouter } from "./routes/auth.js";
+import { requireAnalystAuth } from "./middleware/requireAnalystAuth.js";
 
 async function main() {
   console.log(`[startup] Node ${process.version}`);
@@ -37,17 +39,22 @@ async function main() {
   app.use(express.json({ limit: "15mb" }));
 
   app.get("/api/health", (_req, res) => res.json({ ok: true }));
+  app.use("/api/auth", authRouter);
+
+  // Scout-facing — no password gate, since scouts never see the Analyst UI at all.
   app.use("/api/events", eventsRouter);
   app.use("/api/teams", teamsRouter);
   app.use("/api/matches", matchesRouter);
   app.use("/api/match-scouting", matchScoutingRouter);
   app.use("/api/pit-scouting", pitScoutingRouter);
-  app.use("/api/tba", tbaRouter);
-  app.use("/api/manual", manualImportRouter);
-  app.use("/api/stats", statsRouter);
-  app.use("/api/pick-list", pickListRouter);
-  app.use("/api/settings", settingsRouter);
-  app.use("/api/network", networkRouter);
+
+  // Analyst-facing — gated by ANALYST_PASSWORD when it's configured (see requireAnalystAuth).
+  app.use("/api/tba", requireAnalystAuth, tbaRouter);
+  app.use("/api/manual", requireAnalystAuth, manualImportRouter);
+  app.use("/api/stats", requireAnalystAuth, statsRouter);
+  app.use("/api/pick-list", requireAnalystAuth, pickListRouter);
+  app.use("/api/settings", requireAnalystAuth, settingsRouter);
+  app.use("/api/network", requireAnalystAuth, networkRouter);
 
   // Catches anything forwarded via next(err) from asyncHandler — without this,
   // an async route error would otherwise hang the request with no response.

@@ -12,6 +12,7 @@ import { AnalystDashboard } from "./routes/AnalystDashboard";
 import { AnalystPickList } from "./routes/AnalystPickList";
 import { AnalystImport } from "./routes/AnalystImport";
 import { AnalystJoin } from "./routes/AnalystJoin";
+import { AnalystQrReceive } from "./routes/AnalystQrReceive";
 import { useBackgroundSync } from "./lib/sync";
 
 export default function App() {
@@ -69,6 +70,7 @@ export default function App() {
           <Route path="pick-list" element={<AnalystPickList />} />
           <Route path="import" element={<AnalystImport />} />
           <Route path="join" element={<AnalystJoin />} />
+          <Route path="receive" element={<AnalystQrReceive />} />
         </Route>
       </Routes>
     </div>
