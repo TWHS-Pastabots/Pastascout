@@ -51,14 +51,19 @@ manualImportRouter.post(
     }
 
     for (const match of scheduleResult.rows) {
+      // "qm"/"pm" mirrors TBA's own short codes for qual/playoff matches, so
+      // IDs stay stable if the same event is later synced from TBA directly.
+      const levelCode = match.type === "qual" ? "qm" : "pm";
       await matchesRepo.upsert({
-        id: `${key}_qm${match.matchNumber}`,
+        id: `${key}_${levelCode}${match.matchNumber}`,
         eventKey: key,
-        matchKey: `qm${match.matchNumber}`,
-        type: "qual",
+        matchKey: `${levelCode}${match.matchNumber}`,
+        type: match.type,
         matchNumber: match.matchNumber,
         redTeams: match.redTeams,
         blueTeams: match.blueTeams,
+        redScore: match.redScore,
+        blueScore: match.blueScore,
       });
     }
 
