@@ -9,8 +9,12 @@ const EVENT_COLORS: Record<string, string> = {
   crossObstacle: "#818cf8",
 };
 
-/** Drop a real field render here to replace the drawn fallback. */
-const FIELD_IMAGE_URL = "/field-2026.webp";
+/**
+ * Drop a real field render here to replace the drawn fallback. Built via
+ * BASE_URL (not a bare "/…" path) so it still resolves once deployed under
+ * GitHub Pages' /Pastascout/ subpath instead of the domain root.
+ */
+const FIELD_IMAGE_URL = `${import.meta.env.BASE_URL}field-2026.webp`;
 
 const VIEW_W = 600;
 /** Matches the field render's native 600x315 so the image isn't stretched. */
