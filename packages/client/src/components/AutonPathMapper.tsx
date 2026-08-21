@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { AutonPath, AutonPathWaypoint, AutonStroke, StartPosition } from "@frc-scout/shared";
+import type { AutonPath, AutonStroke, StartPosition } from "@frc-scout/shared";
 import { GAME_CONFIG, simplifyPath } from "@frc-scout/shared";
 import { DrawnField } from "./FieldBackdrop";
 
@@ -23,7 +23,7 @@ const MIN_POINT_GAP = 0.004;
 /** RDP tolerance applied when a stroke finishes. */
 const SIMPLIFY_TOLERANCE = 0.005;
 
-type Mode = "start" | "draw" | "tag";
+type Mode = "start" | "draw";
 
 interface DraftPoint {
   x: number;
@@ -45,7 +45,6 @@ export function AutonPathMapper({
   const svgRef = useRef<SVGSVGElement>(null);
   const [running, setRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
-  const [eventType, setEventType] = useState<AutonPathWaypoint["eventType"]>("pickup");
   const [mode, setMode] = useState<Mode>("start");
   const [hasFieldImage, setHasFieldImage] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -109,15 +108,6 @@ export function AutonPathMapper({
     if (mode === "start") {
       onStartPositionChange({ x, y });
       setMode("draw");
-      return;
-    }
-
-    if (mode === "tag") {
-      onChange({
-        ...value,
-        strokes,
-        waypoints: [...value.waypoints, { x, y, t: Math.round(elapsedRef.current * 10) / 10, eventType }],
-      });
       return;
     }
 
@@ -202,34 +192,11 @@ export function AutonPathMapper({
         <ModeButton active={mode === "draw"} onClick={() => setMode("draw")} activeClass="bg-sky-400 text-sky-950">
           Draw path
         </ModeButton>
-        <ModeButton active={mode === "tag"} onClick={() => setMode("tag")} activeClass="bg-amber-300 text-amber-950">
-          Add marker
-        </ModeButton>
       </div>
-
-      {mode === "tag" && (
-        <div className="flex gap-2 text-xs">
-          {(["pickup", "score", "crossObstacle"] as const).map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => setEventType(type)}
-              className="rounded-full px-2 py-1 font-medium capitalize"
-              style={{
-                backgroundColor: eventType === type ? EVENT_COLORS[type] : "#1e293b",
-                color: eventType === type ? "#0f172a" : "#94a3b8",
-              }}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
-      )}
 
       <p className="text-xs text-slate-500">
         {mode === "start" && "Tap the field where the robot started."}
         {mode === "draw" && "Drag across the field to trace the robot's route. Each drag adds one line."}
-        {mode === "tag" && "Tap where something happened to drop a labeled marker."}
       </p>
 
       <svg

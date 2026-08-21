@@ -144,6 +144,12 @@ function MatchScoutingFormFields() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <section className="flex flex-col gap-3">
           <h2 className="font-semibold text-slate-200">Autonomous ({GAME_CONFIG.autonSeconds}s)</h2>
+          <AutonPathMapper
+            value={autonPath}
+            onChange={setAutonPath}
+            startPosition={startPosition}
+            onStartPositionChange={setStartPosition}
+          />
           <Toggle label="Mobility (left starting zone)" value={mobility} onChange={setMobility} />
           <Counter
             label="Fuel scored (auton)"
@@ -157,12 +163,6 @@ function MatchScoutingFormFields() {
             label="This robot contributed to auton"
             value={contributedToAuton}
             onChange={setContributedToAuton}
-          />
-          <AutonPathMapper
-            value={autonPath}
-            onChange={setAutonPath}
-            startPosition={startPosition}
-            onStartPositionChange={setStartPosition}
           />
         </section>
 

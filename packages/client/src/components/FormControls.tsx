@@ -77,8 +77,8 @@ export function Toggle({ label, value, onChange }: { label: string; value: boole
         className={`relative h-5 w-9 rounded-full transition-colors ${value ? "bg-sky-500" : "bg-slate-700"}`}
       >
         <span
-          className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
-            value ? "translate-x-4" : "translate-x-0.5"
+          className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
+            value ? "translate-x-4" : "translate-x-0"
           }`}
         />
       </span>
