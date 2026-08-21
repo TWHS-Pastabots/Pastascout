@@ -10,7 +10,7 @@ const EVENT_COLORS: Record<string, string> = {
 };
 
 /** Drop a real field render here to replace the drawn fallback. */
-const FIELD_IMAGE_URL = "/field-2026.png";
+const FIELD_IMAGE_URL = "/field-2026.webp";
 
 const VIEW_W = 600;
 /** Matches the field render's native 600x315 so the image isn't stretched. */
@@ -284,7 +284,7 @@ export function AutonPathMapper({
         </span>
         {!hasFieldImage && (
           <span>
-            Drop a field render at <span className="font-mono text-slate-400">public/field-2026.png</span>
+            Drop a field render at <span className="font-mono text-slate-400">public/field-2026.webp</span>
           </span>
         )}
       </div>

@@ -209,9 +209,10 @@ comparable.
 
 ### The field image
 
-The mapper uses `packages/client/public/field-2026.png` (600×315). Replace that
-file to change the field art — the viewBox matches its aspect ratio. If the file
-is missing, the mapper falls back to a drawn approximation so it still works.
+The mapper uses `packages/client/public/field-2026.webp` (2000×977). Replace
+that file to change the field art — the viewBox matches its aspect ratio. If
+the file is missing, the mapper falls back to a drawn approximation so it
+still works.
 
 Start position, strokes, and markers are all stored as normalized 0–1
 coordinates, so **swapping the field image never invalidates scouting data you've

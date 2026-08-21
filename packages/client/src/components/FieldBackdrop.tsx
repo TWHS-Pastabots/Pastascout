@@ -1,7 +1,7 @@
 /**
  * Field backdrop for the auton path mapper.
  *
- * Prefers a real field image dropped in at `public/field-2026.png` (see
+ * Prefers a real field image dropped in at `public/field-2026.webp` (see
  * README — we can't ship FIRST's official field render ourselves). When that
  * file isn't present it falls back to this drawn approximation of the REBUILT
  * field so the mapper is still usable out of the box.
