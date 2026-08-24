@@ -1,26 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import type { AutonPath, AutonStroke, StartPosition } from "@frc-scout/shared";
+import type { AutonPath, StartPosition } from "@frc-scout/shared";
 import { GAME_CONFIG, simplifyPath } from "@frc-scout/shared";
-import { DrawnField } from "./FieldBackdrop";
-
-const EVENT_COLORS: Record<string, string> = {
-  pickup: "#facc15",
-  score: "#34d399",
-  crossObstacle: "#818cf8",
-};
-
-/**
- * Drop a real field render here to replace the drawn fallback. Built via
- * BASE_URL (not a bare "/…" path) so it still resolves once deployed under
- * GitHub Pages' /Pastascout/ subpath instead of the domain root.
- */
-const FIELD_IMAGE_URL = `${import.meta.env.BASE_URL}field-2026.webp`;
-
-const VIEW_W = 600;
-/** Matches the field render's native 600x315 so the image isn't stretched. */
-const VIEW_H = 315;
-/** The drawn fallback is authored against a 600x300 box; scale it to fit. */
-const DRAWN_FIELD_SCALE_Y = VIEW_H / 300;
+import { AutonPathView } from "./AutonPathView";
 
 /** Minimum gap between captured points, in normalized units — throttles raw pointer noise. */
 const MIN_POINT_GAP = 0.004;
@@ -50,7 +31,6 @@ export function AutonPathMapper({
   const [running, setRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [mode, setMode] = useState<Mode>("start");
-  const [hasFieldImage, setHasFieldImage] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [draft, setDraft] = useState<DraftPoint[] | null>(null);
 
@@ -59,13 +39,6 @@ export function AutonPathMapper({
   const elapsedRef = useRef(0);
 
   const strokes = value.strokes ?? [];
-
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => setHasFieldImage(true);
-    img.onerror = () => setHasFieldImage(false);
-    img.src = FIELD_IMAGE_URL;
-  }, []);
 
   // Kept in a ref so pointer handlers read the live time without re-subscribing.
   useEffect(() => {
@@ -203,9 +176,12 @@ export function AutonPathMapper({
         {mode === "draw" && "Drag across the field to trace the robot's route. Each drag adds one line."}
       </p>
 
-      <svg
-        ref={svgRef}
-        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+      <AutonPathView
+        svgRef={svgRef}
+        path={value}
+        startPosition={startPosition}
+        flipped={flipped}
+        draft={draft}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -213,72 +189,7 @@ export function AutonPathMapper({
         className={`w-full touch-none select-none rounded-lg border border-slate-700 ${
           mode === "draw" ? "cursor-cell" : "cursor-crosshair"
         }`}
-      >
-        <g transform={flipped ? `rotate(180 ${VIEW_W / 2} ${VIEW_H / 2})` : undefined}>
-          {hasFieldImage ? (
-            <image href={FIELD_IMAGE_URL} x={0} y={0} width={VIEW_W} height={VIEW_H} preserveAspectRatio="none" />
-          ) : (
-            <g transform={`scale(1 ${DRAWN_FIELD_SCALE_Y})`}>
-              <DrawnField />
-            </g>
-          )}
-
-          {strokes.map((stroke, i) => (
-            <StrokeLine key={`stroke-${i}`} stroke={stroke} />
-          ))}
-          {draft && draft.length > 1 && <StrokeLine stroke={{ points: draft }} draft />}
-
-          {startPosition && (
-            <g>
-              <rect
-                x={startPosition.x * VIEW_W - 9}
-                y={startPosition.y * VIEW_H - 9}
-                width={18}
-                height={18}
-                rx={3}
-                fill="#34d399"
-                stroke="#0f172a"
-                strokeWidth={2}
-              />
-              <text
-                x={startPosition.x * VIEW_W}
-                y={startPosition.y * VIEW_H + 4}
-                textAnchor="middle"
-                fontSize={11}
-                fontWeight="bold"
-                fill="#0f172a"
-                transform={flipped ? `rotate(180 ${startPosition.x * VIEW_W} ${startPosition.y * VIEW_H})` : undefined}
-              >
-                S
-              </text>
-            </g>
-          )}
-
-          {value.waypoints.map((wp, i) => (
-            <g key={`marker-${i}`}>
-              <circle
-                cx={wp.x * VIEW_W}
-                cy={wp.y * VIEW_H}
-                r={8}
-                fill={wp.eventType ? EVENT_COLORS[wp.eventType] : "#f8fafc"}
-                stroke="#0f172a"
-                strokeWidth={2}
-              />
-              <text
-                x={wp.x * VIEW_W}
-                y={wp.y * VIEW_H + 3.5}
-                textAnchor="middle"
-                fontSize={9}
-                fontWeight="bold"
-                fill="#0f172a"
-                transform={flipped ? `rotate(180 ${wp.x * VIEW_W} ${wp.y * VIEW_H})` : undefined}
-              >
-                {i + 1}
-              </text>
-            </g>
-          ))}
-        </g>
-      </svg>
+      />
 
       <div className="flex items-center justify-between text-xs text-slate-500">
         <span>
@@ -286,11 +197,6 @@ export function AutonPathMapper({
           {value.waypoints.length === 1 ? "" : "s"}
           {totalPoints > 0 && ` · ${totalPoints} pts`}
         </span>
-        {!hasFieldImage && (
-          <span>
-            Drop a field render at <span className="font-mono text-slate-400">public/field-2026.webp</span>
-          </span>
-        )}
       </div>
 
       {value.waypoints.length > 0 && (
@@ -334,26 +240,5 @@ function ModeButton({
     >
       {children}
     </button>
-  );
-}
-
-/** Dark casing under a light line so the route stays readable over any field art. */
-function StrokeLine({ stroke, draft = false }: { stroke: AutonStroke | { points: DraftPoint[] }; draft?: boolean }) {
-  const d = stroke.points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x * VIEW_W} ${p.y * VIEW_H}`)
-    .join(" ");
-
-  return (
-    <g>
-      <path d={d} fill="none" stroke="#0f172a" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
-      <path
-        d={d}
-        fill="none"
-        stroke={draft ? "#7dd3fc" : "#f8fafc"}
-        strokeWidth={3}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </g>
   );
 }

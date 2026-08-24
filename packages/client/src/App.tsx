@@ -9,6 +9,7 @@ import { PitScoutingTeamPicker } from "./routes/PitScoutingTeamPicker";
 import { PitScoutingForm } from "./routes/PitScoutingForm";
 import { AnalystLayout } from "./routes/AnalystLayout";
 import { AnalystDashboard } from "./routes/AnalystDashboard";
+import { AnalystTeamDetail } from "./routes/AnalystTeamDetail";
 import { AnalystPickList } from "./routes/AnalystPickList";
 import { AnalystImport } from "./routes/AnalystImport";
 import { AnalystJoin } from "./routes/AnalystJoin";
@@ -67,6 +68,7 @@ export default function App() {
           }
         >
           <Route index element={<AnalystDashboard />} />
+          <Route path="team/:teamNumber" element={<AnalystTeamDetail />} />
           <Route path="pick-list" element={<AnalystPickList />} />
           <Route path="import" element={<AnalystImport />} />
           <Route path="join" element={<AnalystJoin />} />

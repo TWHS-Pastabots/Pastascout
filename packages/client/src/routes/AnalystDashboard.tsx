@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAppStore } from "../state/appStore";
 
@@ -75,7 +76,9 @@ export function AnalystDashboard() {
               <tr key={t.teamNumber} className="border-t border-slate-800 text-slate-200">
                 <td className="px-3 py-2 text-slate-400">{t.rank}</td>
                 <td className="px-3 py-2 font-medium">
-                  {t.teamNumber} <span className="text-slate-500">{t.teamName}</span>
+                  <Link to={`/analyst/team/${t.teamNumber}`} className="hover:text-sky-400 hover:underline">
+                    {t.teamNumber} <span className="text-slate-500">{t.teamName}</span>
+                  </Link>
                 </td>
                 <td className="px-3 py-2">{t.epa.toFixed(1)}</td>
                 <td className="px-3 py-2">{t.opr.toFixed(1)}</td>
