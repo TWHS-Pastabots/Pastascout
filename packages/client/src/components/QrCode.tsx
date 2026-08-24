@@ -93,7 +93,7 @@ export function QrCodeCarousel({ chunks, autoAdvanceMs = 2200 }: { chunks: strin
           </div>
           <div className="flex gap-1">
             {chunks.map((_, i) => (
-              <span key={i} className={`h-1.5 w-1.5 rounded-full ${i === index ? "bg-sky-400" : "bg-slate-700"}`} />
+              <span key={i} className={`h-1.5 w-1.5 rounded-full ${i === index ? "bg-green-400" : "bg-slate-700"}`} />
             ))}
           </div>
         </>

@@ -5,7 +5,7 @@ import { useAppStore } from "../state/appStore";
 import { AnalystAuthGate } from "../components/AnalystAuthGate";
 
 const tabClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-lg px-3 py-1.5 text-sm font-medium ${isActive ? "bg-sky-600 text-white" : "bg-slate-800 text-slate-300"}`;
+  `rounded-lg px-3 py-1.5 text-sm font-medium ${isActive ? "bg-green-600 text-white" : "bg-slate-800 text-slate-300"}`;
 
 export function AnalystLayout() {
   const activeEventKey = useAppStore((s) => s.activeEventKey);

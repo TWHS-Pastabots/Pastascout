@@ -57,13 +57,13 @@ function AutoSyncPanel({
   }
 
   return (
-    <section className="rounded-xl border border-emerald-800 bg-emerald-950/40 p-4">
+    <section className="rounded-xl border border-green-800 bg-green-950/40 p-4">
       <div className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        <span className="h-2 w-2 rounded-full bg-green-500" />
         <h2 className="font-semibold text-slate-100">Auto-syncing from The Blue Alliance</h2>
       </div>
       <p className="mt-1 text-sm text-slate-400">
-        The server pulls <span className="font-mono text-sky-300">{status.eventKey}</span> automatically — schedule
+        The server pulls <span className="font-mono text-green-300">{status.eventKey}</span> automatically — schedule
         and results stay up to date with no import step.
       </p>
       <dl className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
@@ -80,7 +80,7 @@ function AutoSyncPanel({
         <button
           onClick={syncNow}
           disabled={busy}
-          className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white disabled:bg-slate-700"
+          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white disabled:bg-slate-700"
         >
           {busy ? "Refreshing…" : "Refresh now"}
         </button>
@@ -118,11 +118,11 @@ function NotConfiguredPanel() {
       <ol className="mt-3 flex list-decimal flex-col gap-1 pl-5 text-sm text-slate-400">
         <li>
           Someone who can sign in with Google gets a free read key at{" "}
-          <span className="font-mono text-sky-300">thebluealliance.com/account</span> → "Read API Keys".
+          <span className="font-mono text-green-300">thebluealliance.com/account</span> → "Read API Keys".
         </li>
         <li>
-          Copy <span className="font-mono text-sky-300">packages/server/.env.example</span> to{" "}
-          <span className="font-mono text-sky-300">.env</span> and fill in <span className="font-mono">TBA_API_KEY</span>{" "}
+          Copy <span className="font-mono text-green-300">packages/server/.env.example</span> to{" "}
+          <span className="font-mono text-green-300">.env</span> and fill in <span className="font-mono">TBA_API_KEY</span>{" "}
           and <span className="font-mono">TBA_EVENT_KEY</span>.
         </li>
         <li>Restart the server. This panel turns green and stays in sync on its own.</li>
@@ -184,7 +184,7 @@ function ManualImportPanel({
               value={eventKey}
               onChange={(e) => setEventKey(e.target.value)}
               placeholder="2026myevent"
-              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -193,7 +193,7 @@ function ManualImportPanel({
               value={eventName}
               onChange={(e) => setEventName(e.target.value)}
               placeholder="My Regional"
-              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
             />
           </label>
         </div>
@@ -207,7 +207,7 @@ function ManualImportPanel({
             onChange={(e) => setScheduleText(e.target.value)}
             rows={6}
             placeholder={SCHEDULE_PLACEHOLDER}
-            className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 font-mono text-sm text-slate-100 placeholder:text-slate-600 focus:border-sky-500 focus:outline-none"
+            className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 font-mono text-sm text-slate-100 placeholder:text-slate-600 focus:border-green-500 focus:outline-none"
           />
         </label>
 
@@ -220,14 +220,14 @@ function ManualImportPanel({
             onChange={(e) => setTeamsText(e.target.value)}
             rows={4}
             placeholder={"254, The Cheesy Poofs\n1114, Simbotics"}
-            className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 font-mono text-sm text-slate-100 placeholder:text-slate-600 focus:border-sky-500 focus:outline-none"
+            className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 font-mono text-sm text-slate-100 placeholder:text-slate-600 focus:border-green-500 focus:outline-none"
           />
         </label>
 
         <button
           type="submit"
           disabled={busy || !eventKey.trim()}
-          className="rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white disabled:bg-slate-700 disabled:text-slate-500"
+          className="rounded-lg bg-green-600 px-4 py-2 font-medium text-white disabled:bg-slate-700 disabled:text-slate-500"
         >
           {busy ? "Setting up…" : "Set up event"}
         </button>
@@ -235,7 +235,7 @@ function ManualImportPanel({
         {error && <p className="text-sm text-red-400">{error}</p>}
         {result && (
           <div className="text-sm">
-            <p className="text-emerald-400">
+            <p className="text-green-400">
               Loaded {result.matchCount} matches and {result.teamCount} teams into {result.eventKey}.
             </p>
             {result.issues.length > 0 && (

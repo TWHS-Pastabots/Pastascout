@@ -52,7 +52,7 @@ export function Counter({
               key={`plus-${step}`}
               type="button"
               onClick={() => onChange(value + step)}
-              className="flex-1 rounded-lg bg-sky-900/60 py-1.5 text-xs font-medium text-sky-300 hover:bg-sky-800"
+              className="flex-1 rounded-lg bg-green-900/60 py-1.5 text-xs font-medium text-green-300 hover:bg-green-800"
             >
               +{step}
             </button>
@@ -69,12 +69,12 @@ export function Toggle({ label, value, onChange }: { label: string; value: boole
       type="button"
       onClick={() => onChange(!value)}
       className={`flex w-full items-center justify-between rounded-lg border px-3 py-2 text-sm font-medium ${
-        value ? "border-sky-600 bg-sky-950 text-sky-300" : "border-slate-800 bg-slate-900 text-slate-300"
+        value ? "border-green-600 bg-green-950 text-green-300" : "border-slate-800 bg-slate-900 text-slate-300"
       }`}
     >
       <span>{label}</span>
       <span
-        className={`relative h-5 w-9 rounded-full transition-colors ${value ? "bg-sky-500" : "bg-slate-700"}`}
+        className={`relative h-5 w-9 rounded-full transition-colors ${value ? "bg-green-500" : "bg-slate-700"}`}
       >
         <span
           className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
@@ -116,7 +116,7 @@ export function LevelPicker({
             type="button"
             onClick={() => onChange(lvl)}
             className={`flex-1 rounded-lg px-2 py-1.5 text-sm font-medium ${
-              value === lvl ? "bg-sky-600 text-white" : "bg-slate-800 text-slate-400"
+              value === lvl ? "bg-green-600 text-white" : "bg-slate-800 text-slate-400"
             }`}
           >
             L{lvl}
@@ -156,7 +156,7 @@ export function SkillSlider({
             aria-label={`${label}: ${n} of ${max}`}
             onClick={() => onChange(n)}
             className={`h-9 flex-1 rounded text-[10px] font-semibold ${
-              n <= value ? "bg-sky-500 text-sky-950" : "bg-slate-800 text-slate-600"
+              n <= value ? "bg-green-500 text-green-950" : "bg-slate-800 text-slate-600"
             }`}
           >
             {n}

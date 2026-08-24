@@ -15,7 +15,7 @@ export function AnalystTeamDetail() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/analyst" className="text-sm text-sky-400 hover:text-sky-300">
+      <Link to="/analyst" className="text-sm text-green-400 hover:text-green-300">
         ← Back to stats
       </Link>
       <h2 className="text-lg font-bold text-slate-100">Team {num} — auton paths</h2>

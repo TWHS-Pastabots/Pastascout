@@ -9,7 +9,6 @@ interface NavItem {
   path: string;
   /** Role this page belongs to; picking it switches roles rather than bouncing to the home screen. */
   role: Role;
-  icon: string;
 }
 
 const NAV_SECTIONS: { heading: string; items: NavItem[] }[] = [
@@ -21,14 +20,12 @@ const NAV_SECTIONS: { heading: string; items: NavItem[] }[] = [
         description: "Pick a match and team to scout",
         path: "/scout",
         role: "scout",
-        icon: "🎯",
       },
       {
         label: "Pit scouting",
         description: "Robot specs and capabilities",
         path: "/scout/pit",
         role: "scout",
-        icon: "🔧",
       },
     ],
   },
@@ -40,35 +37,30 @@ const NAV_SECTIONS: { heading: string; items: NavItem[] }[] = [
         description: "OPR, EPA, and blended rankings",
         path: "/analyst",
         role: "analyst",
-        icon: "📊",
       },
       {
         label: "Pick list",
         description: "Shared alliance selection order",
         path: "/analyst/pick-list",
         role: "analyst",
-        icon: "📋",
       },
       {
         label: "Event setup",
         description: "Blue Alliance sync or manual import",
         path: "/analyst/import",
         role: "analyst",
-        icon: "📥",
       },
       {
         label: "Join (QR)",
         description: "Get scouts' phones connected",
         path: "/analyst/join",
         role: "analyst",
-        icon: "📱",
       },
       {
         label: "Receive via QR",
         description: "Scan a scout's offline backup code",
         path: "/analyst/receive",
         role: "analyst",
-        icon: "📷",
       },
     ],
   },
@@ -121,15 +113,18 @@ export function NavMenu({ open, onClose }: { open: boolean; onClose: () => void 
 
       <nav
         aria-label="Main menu"
-        className="relative flex h-full w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-slate-800 bg-slate-950 shadow-xl"
+        className="relative flex h-full w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-slate-800 bg-black shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
-          <div>
-            <p className="font-semibold text-slate-100">FRC Scouting</p>
-            <p className="text-xs text-slate-500">
-              {role ? `${role} mode` : "no role selected"}
-              {scoutName ? ` · ${scoutName}` : ""}
-            </p>
+          <div className="flex items-center gap-2">
+            <img src={`${import.meta.env.BASE_URL}pastabots-logo.png`} alt="" className="h-8 w-8" />
+            <div>
+              <p className="font-semibold text-slate-100">Pastabots</p>
+              <p className="text-xs text-slate-500">
+                {role ? `${role} mode` : "no role selected"}
+                {scoutName ? ` · ${scoutName}` : ""}
+              </p>
+            </div>
           </div>
           <button
             type="button"
@@ -157,14 +152,11 @@ export function NavMenu({ open, onClose }: { open: boolean; onClose: () => void 
                       onClick={() => go(item)}
                       aria-current={active ? "page" : undefined}
                       className={`flex items-start gap-3 rounded-lg px-2 py-2 text-left ${
-                        active ? "bg-sky-950 ring-1 ring-sky-700" : "hover:bg-slate-900"
+                        active ? "bg-green-950 ring-1 ring-green-700" : "hover:bg-slate-900"
                       }`}
                     >
-                      <span aria-hidden="true" className="text-base leading-5">
-                        {item.icon}
-                      </span>
                       <span className="min-w-0">
-                        <span className={`block text-sm font-medium ${active ? "text-sky-300" : "text-slate-200"}`}>
+                        <span className={`block text-sm font-medium ${active ? "text-green-300" : "text-slate-200"}`}>
                           {item.label}
                         </span>
                         <span className="block text-xs text-slate-500">{item.description}</span>
@@ -186,7 +178,6 @@ export function NavMenu({ open, onClose }: { open: boolean; onClose: () => void 
               }}
               className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-slate-900"
             >
-              <span aria-hidden="true">⚙️</span>
               <span className="text-sm font-medium text-slate-200">Settings</span>
             </button>
             <button
@@ -198,7 +189,6 @@ export function NavMenu({ open, onClose }: { open: boolean; onClose: () => void 
               }}
               className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-slate-900"
             >
-              <span aria-hidden="true">🔄</span>
               <span className="text-sm font-medium text-slate-200">Switch role</span>
             </button>
           </div>

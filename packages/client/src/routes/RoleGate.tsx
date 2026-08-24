@@ -23,16 +23,21 @@ export function RoleGate() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-8 px-4 py-12">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-100">FRC Scouting</h1>
-        <p className="mt-1 text-slate-400">Pick how you're using the app.</p>
+      <div className="flex items-center gap-3">
+        <img src={`${import.meta.env.BASE_URL}pastabots-logo.png`} alt="" className="h-14 w-14" />
+        <div>
+          <h1 className="text-2xl font-bold text-slate-100">
+            Pastabots <span className="text-red-500">Scouting</span>
+          </h1>
+          <p className="mt-1 text-slate-400">Pick how you're using the app.</p>
+        </div>
       </div>
 
       <section className="rounded-xl border border-slate-800 bg-slate-900 p-4">
         <h2 className="font-semibold text-slate-100">I'm scouting</h2>
         <p className="mt-1 text-sm text-slate-400">Enter your name so your entries are attributed to you.</p>
         <input
-          className="mt-3 w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+          className="mt-3 w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
           placeholder="Your name"
           value={nameInput}
           onChange={(e) => setNameInput(e.target.value)}
@@ -40,7 +45,7 @@ export function RoleGate() {
         <button
           onClick={chooseScout}
           disabled={!nameInput.trim()}
-          className="mt-3 w-full rounded-lg bg-sky-600 px-4 py-2 font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
+          className="mt-3 w-full rounded-lg bg-green-600 px-4 py-2 font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
         >
           Start scouting
         </button>

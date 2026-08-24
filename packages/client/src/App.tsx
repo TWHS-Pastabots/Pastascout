@@ -20,7 +20,7 @@ export default function App() {
   useBackgroundSync();
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-black">
       <StatusBar />
       <Routes>
         <Route path="/" element={<RoleGate />} />

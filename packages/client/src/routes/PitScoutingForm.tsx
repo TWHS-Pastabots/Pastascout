@@ -65,7 +65,7 @@ function PitScoutingFormFields() {
     return (
       <div className="mx-auto flex max-w-md flex-col gap-6 px-4 py-10 text-center">
         <div>
-          <h1 className="text-xl font-bold text-emerald-400">Saved ✓</h1>
+          <h1 className="text-xl font-bold text-green-400">Saved ✓</h1>
           <p className="mt-1 text-slate-400">
             Team {savedEntry.teamNumber} — saved on this device and will sync automatically once you're online.
           </p>
@@ -77,7 +77,7 @@ function PitScoutingFormFields() {
             onClick={() => setShowQr(true)}
             className="rounded-xl bg-slate-800 px-4 py-3 font-medium text-slate-200 hover:bg-slate-700"
           >
-            📱 No signal? Show QR backup
+            No signal? Show QR backup
           </button>
         ) : (
           <div className="flex flex-col items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 p-4">
@@ -97,7 +97,7 @@ function PitScoutingFormFields() {
         <button
           type="button"
           onClick={() => navigate("/scout/pit")}
-          className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
+          className="rounded-xl bg-green-600 px-4 py-3 text-lg font-semibold text-white hover:bg-green-500"
         >
           Done — back to teams
         </button>
@@ -116,7 +116,7 @@ function PitScoutingFormFields() {
             value={drivetrainType}
             onChange={(e) => setDrivetrainType(e.target.value)}
             placeholder="e.g. Swerve, West Coast Drive"
-            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
           />
         </label>
 
@@ -128,7 +128,7 @@ function PitScoutingFormFields() {
               min={0}
               value={weightLbs}
               onChange={(e) => setWeightLbs(e.target.value)}
-              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 focus:border-sky-500 focus:outline-none"
+              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 focus:border-green-500 focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -139,7 +139,7 @@ function PitScoutingFormFields() {
               value={fuelCapacity}
               onChange={(e) => setFuelCapacity(e.target.value)}
               placeholder="How many can it hold?"
-              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
             />
           </label>
         </div>
@@ -153,7 +153,7 @@ function PitScoutingFormFields() {
             onChange={(e) => setAutonCapabilities(e.target.value)}
             rows={2}
             placeholder="What can they do in auton? How many paths?"
-            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
           />
         </label>
 
@@ -166,7 +166,7 @@ function PitScoutingFormFields() {
                 type="button"
                 onClick={() => toggleClimbLevel(lvl)}
                 className={`flex-1 rounded-lg px-2 py-1.5 text-sm font-medium ${
-                  canClimbLevels.includes(lvl) ? "bg-sky-600 text-white" : "bg-slate-800 text-slate-400"
+                  canClimbLevels.includes(lvl) ? "bg-green-600 text-white" : "bg-slate-800 text-slate-400"
                 }`}
               >
                 Level {lvl}
@@ -183,13 +183,13 @@ function PitScoutingFormFields() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+            className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
           />
         </label>
 
         <button
           type="submit"
-          className="rounded-xl bg-emerald-600 px-4 py-3 text-lg font-semibold text-white hover:bg-emerald-500"
+          className="rounded-xl bg-green-600 px-4 py-3 text-lg font-semibold text-white hover:bg-green-500"
         >
           Save
         </button>

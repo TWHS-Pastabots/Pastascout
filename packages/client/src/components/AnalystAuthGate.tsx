@@ -62,12 +62,12 @@ export function AnalystAuthGate({ children }: { children: React.ReactNode }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+          className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
         />
         <button
           type="submit"
           disabled={busy || !password}
-          className="rounded-lg bg-sky-600 px-4 py-2 font-medium text-white disabled:bg-slate-700 disabled:text-slate-500"
+          className="rounded-lg bg-green-600 px-4 py-2 font-medium text-white disabled:bg-slate-700 disabled:text-slate-500"
         >
           {busy ? "Checking…" : "Unlock"}
         </button>

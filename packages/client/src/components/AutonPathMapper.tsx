@@ -140,7 +140,7 @@ export function AutonPathMapper({
         <button
           type="button"
           onClick={startTimer}
-          className="rounded-lg bg-sky-600 px-3 py-1.5 text-sm font-medium text-white"
+          className="rounded-lg bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
         >
           {running ? `Auton running: ${elapsed.toFixed(1)}s` : "Start auton timer"}
         </button>
@@ -163,10 +163,10 @@ export function AutonPathMapper({
       </div>
 
       <div className="flex flex-wrap items-center gap-2 text-xs">
-        <ModeButton active={mode === "start"} onClick={() => setMode("start")} activeClass="bg-emerald-400 text-emerald-950">
+        <ModeButton active={mode === "start"} onClick={() => setMode("start")} activeClass="bg-green-400 text-green-950">
           {startPosition ? "Move start" : "Set start"}
         </ModeButton>
-        <ModeButton active={mode === "draw"} onClick={() => setMode("draw")} activeClass="bg-sky-400 text-sky-950">
+        <ModeButton active={mode === "draw"} onClick={() => setMode("draw")} activeClass="bg-green-400 text-green-950">
           Draw path
         </ModeButton>
       </div>

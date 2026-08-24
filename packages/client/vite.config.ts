@@ -13,23 +13,23 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg"],
+      includeAssets: ["pastabots-logo.png"],
       manifest: {
-        name: "FRC Scouting",
-        short_name: "Scouting",
+        name: "Pastabots Scouting",
+        short_name: "Pastabots",
         start_url: ".",
         display: "standalone",
-        background_color: "#0f172a",
-        theme_color: "#0f172a",
+        background_color: "#000000",
+        theme_color: "#000000",
         icons: [
-          { src: "pwa-192.svg", sizes: "192x192", type: "image/svg+xml" },
-          { src: "pwa-512.svg", sizes: "512x512", type: "image/svg+xml" },
+          { src: "pastabots-logo.png", sizes: "500x600", type: "image/png" },
+          { src: "pastabots-logo.png", sizes: "500x600", type: "image/png", purpose: "maskable" },
         ],
       },
       workbox: {
         // App shell only — scouting data goes through the IndexedDB outbox,
         // not the service worker cache.
-        globPatterns: ["**/*.{js,css,html,svg}"],
+        globPatterns: ["**/*.{js,css,html,svg,png,webp}"],
       },
     }),
   ],

@@ -56,7 +56,7 @@ export function ScoutHome() {
 
       <Link
         to="/scout/pit"
-        className="rounded-xl border border-slate-800 bg-slate-900 p-4 font-medium text-slate-100 hover:border-sky-600"
+        className="rounded-xl border border-slate-800 bg-slate-900 p-4 font-medium text-slate-100 hover:border-green-600"
       >
         Pit scouting →
       </Link>

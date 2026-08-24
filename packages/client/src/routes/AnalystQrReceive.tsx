@@ -106,7 +106,7 @@ export function AnalystQrReceive() {
         ) : (
           <ul className="mt-2 flex flex-col gap-1 text-sm">
             {received.map((r) => (
-              <li key={r.key + r.at} className={r.status === "ok" ? "text-emerald-400" : "text-amber-400"}>
+              <li key={r.key + r.at} className={r.status === "ok" ? "text-green-400" : "text-amber-400"}>
                 {r.status === "ok" ? "✓" : "⚠"} {r.label} <span className="text-slate-600">· {r.at}</span>
               </li>
             ))}

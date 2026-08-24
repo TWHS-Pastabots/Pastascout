@@ -11,7 +11,7 @@ export function StatusBar() {
 
   return (
     <>
-      <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-slate-950 px-3 py-2 text-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-800 bg-black px-3 py-2 text-sm">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -29,7 +29,12 @@ export function StatusBar() {
             </svg>
           </button>
 
-          <span className={`h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-amber-500"}`} />
+          <img src={`${import.meta.env.BASE_URL}pastabots-logo.png`} alt="" className="h-6 w-6" />
+          <span className="font-semibold text-slate-200">
+            Pastabots<span className="text-red-500">.</span>
+          </span>
+
+          <span className={`ml-2 h-2 w-2 rounded-full ${online ? "bg-green-500" : "bg-amber-500"}`} />
           <span className="text-slate-400">{online ? "Online" : "Offline"}</span>
           {unsynced > 0 && (
             <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-medium text-amber-400">

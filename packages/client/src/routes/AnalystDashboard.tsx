@@ -76,7 +76,7 @@ export function AnalystDashboard() {
               <tr key={t.teamNumber} className="border-t border-slate-800 text-slate-200">
                 <td className="px-3 py-2 text-slate-400">{t.rank}</td>
                 <td className="px-3 py-2 font-medium">
-                  <Link to={`/analyst/team/${t.teamNumber}`} className="hover:text-sky-400 hover:underline">
+                  <Link to={`/analyst/team/${t.teamNumber}`} className="hover:text-green-400 hover:underline">
                     {t.teamNumber} <span className="text-slate-500">{t.teamName}</span>
                   </Link>
                 </td>

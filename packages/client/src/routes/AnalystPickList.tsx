@@ -110,7 +110,7 @@ export function AnalystPickList() {
               onChange={(e) => saveOurTeam(e.target.value.replace(/[^0-9]/g, ""))}
               placeholder="e.g. 498"
               inputMode="numeric"
-              className="w-32 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:outline-none"
+              className="w-32 rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-green-500 focus:outline-none"
             />
           </label>
           <div className="flex flex-col gap-1">
@@ -123,7 +123,7 @@ export function AnalystPickList() {
                   onClick={() => setStrategy(s.id)}
                   title={s.blurb}
                   className={`rounded-lg px-3 py-2 text-sm font-medium ${
-                    strategy === s.id ? "bg-sky-600 text-white" : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    strategy === s.id ? "bg-green-600 text-white" : "bg-slate-800 text-slate-300 hover:bg-slate-700"
                   }`}
                 >
                   {s.label}
@@ -209,14 +209,14 @@ export function AnalystPickList() {
                 key={s.teamNumber}
                 type="button"
                 onClick={() => persist([...order, s.teamNumber])}
-                className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-left hover:border-sky-600"
+                className="rounded-lg border border-slate-800 bg-black px-3 py-2 text-left hover:border-green-600"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium text-slate-200">
                     <span className="mr-2 text-slate-600">#{i + 1}</span>
                     {s.teamNumber} <span className="text-slate-500">{s.teamName}</span>
                   </span>
-                  <span className="shrink-0 rounded bg-sky-950 px-2 py-0.5 text-xs font-semibold text-sky-300">
+                  <span className="shrink-0 rounded bg-green-950 px-2 py-0.5 text-xs font-semibold text-green-300">
                     {s.score.toFixed(1)}
                   </span>
                 </div>

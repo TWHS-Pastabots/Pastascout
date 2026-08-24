@@ -106,7 +106,7 @@ export function PhotoUpload({ photos, onChange }: { photos: string[]; onChange: 
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-slate-700 text-slate-400 hover:border-sky-600 hover:text-sky-400 disabled:opacity-50"
+            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-slate-700 text-slate-400 hover:border-green-600 hover:text-green-400 disabled:opacity-50"
           >
             <span className="text-xl leading-none">{busy ? "…" : "+"}</span>
             <span className="text-[10px]">{busy ? "Processing" : "Add photo"}</span>

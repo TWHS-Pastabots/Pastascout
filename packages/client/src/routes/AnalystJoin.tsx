@@ -28,7 +28,7 @@ export function AnalystJoin() {
           )}
           <div className="flex flex-col gap-1">
             {info.urls.map((url) => (
-              <code key={url} className="rounded bg-slate-800 px-2 py-1 text-sky-300">
+              <code key={url} className="rounded bg-slate-800 px-2 py-1 text-green-300">
                 {url}
               </code>
             ))}
