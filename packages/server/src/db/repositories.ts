@@ -115,13 +115,14 @@ export const matchScoutingRepo = {
   async upsert(e: MatchScoutingEntry) {
     await db.run(
       `INSERT INTO match_scouting_entries
-         (id, match_id, team_number, alliance, scout_name, created_at, auton, teleop, auton_path, skill_ratings, penalties, broke_down, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         (id, match_id, team_number, alliance, scout_name, created_at, auton, teleop, auton_path, skill_ratings, penalties, broke_down, notes, exclude_from_stats)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          match_id=excluded.match_id, team_number=excluded.team_number, alliance=excluded.alliance,
          scout_name=excluded.scout_name, auton=excluded.auton, teleop=excluded.teleop,
          auton_path=excluded.auton_path, skill_ratings=excluded.skill_ratings,
-         penalties=excluded.penalties, broke_down=excluded.broke_down, notes=excluded.notes`,
+         penalties=excluded.penalties, broke_down=excluded.broke_down, notes=excluded.notes,
+         exclude_from_stats=excluded.exclude_from_stats`,
       [
         e.id,
         e.matchId,
@@ -136,6 +137,7 @@ export const matchScoutingRepo = {
         e.penalties,
         e.brokeDown ? 1 : 0,
         e.notes,
+        e.excludeFromStats ? 1 : 0,
       ]
     );
   },
@@ -155,6 +157,7 @@ function rowToMatchScouting(r: any): MatchScoutingEntry {
     penalties: r.penalties,
     brokeDown: !!r.broke_down,
     notes: r.notes,
+    excludeFromStats: !!r.exclude_from_stats,
   };
 }
 

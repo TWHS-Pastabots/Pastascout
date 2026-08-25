@@ -78,6 +78,14 @@ export const MatchScoutingEntrySchema = z.object({
   penalties: z.number().int().min(0).default(0),
   brokeDown: z.boolean().default(false),
   notes: z.string().default(""),
+
+  /**
+   * Set when this report shouldn't count toward the team's averages/rates —
+   * e.g. the scout got the wrong robot, or something unrepresentative
+   * happened. The entry is kept (not deleted) so it's still visible for
+   * context, just excluded from the stats aggregation.
+   */
+  excludeFromStats: z.boolean().default(false),
 });
 export type MatchScoutingEntry = z.infer<typeof MatchScoutingEntrySchema>;
 

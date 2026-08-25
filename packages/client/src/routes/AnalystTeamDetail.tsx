@@ -30,13 +30,21 @@ export function AnalystTeamDetail() {
             const lineCount = (entry.autonPath.strokes ?? []).length;
             const markerCount = entry.autonPath.waypoints.length;
             return (
-              <div key={entry.id} className="rounded-xl border border-slate-800 bg-slate-900 p-3">
+              <div
+                key={entry.id}
+                className={`rounded-xl border p-3 ${
+                  entry.excludeFromStats ? "border-red-900 bg-red-950/20" : "border-slate-800 bg-slate-900"
+                }`}
+              >
                 <div className="mb-2 flex items-center justify-between text-sm">
                   <span className="font-medium text-slate-200">
                     Match {entry.matchId} <span className="text-slate-500">({entry.alliance})</span>
                   </span>
                   <span className="text-slate-500">{entry.scoutName}</span>
                 </div>
+                {entry.excludeFromStats && (
+                  <p className="mb-2 text-xs font-medium text-red-400">Excluded from stats</p>
+                )}
                 <AutonPathView
                   path={entry.autonPath}
                   startPosition={entry.auton.startPosition}

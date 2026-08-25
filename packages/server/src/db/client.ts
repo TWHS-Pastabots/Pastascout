@@ -54,7 +54,8 @@ export async function ensureSchema() {
       skill_ratings TEXT NOT NULL,
       penalties INTEGER NOT NULL DEFAULT 0,
       broke_down INTEGER NOT NULL DEFAULT 0,
-      notes TEXT NOT NULL DEFAULT ''
+      notes TEXT NOT NULL DEFAULT '',
+      exclude_from_stats INTEGER NOT NULL DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS pit_scouting_entries (
@@ -101,17 +102,21 @@ export async function ensureSchema() {
  * so upgrading the app never requires deleting scouting data already collected.
  */
 async function migrateColumns() {
-  const existingColumns = new Set(
-    (await db.all<{ name: string }>("PRAGMA table_info(pit_scouting_entries)")).map((c) => c.name)
-  );
-  const wanted: [string, string][] = [
+  await addMissingColumns("pit_scouting_entries", [
     ["can_go_under_trench", "INTEGER NOT NULL DEFAULT 0"],
     ["fuel_capacity", "INTEGER"],
     ["photos", "TEXT NOT NULL DEFAULT '[]'"],
-  ];
+  ]);
+  await addMissingColumns("match_scouting_entries", [["exclude_from_stats", "INTEGER NOT NULL DEFAULT 0"]]);
+}
+
+async function addMissingColumns(table: string, wanted: [string, string][]) {
+  const existingColumns = new Set(
+    (await db.all<{ name: string }>(`PRAGMA table_info(${table})`)).map((c) => c.name)
+  );
   for (const [name, definition] of wanted) {
     if (!existingColumns.has(name)) {
-      await db.run(`ALTER TABLE pit_scouting_entries ADD COLUMN ${name} ${definition}`);
+      await db.run(`ALTER TABLE ${table} ADD COLUMN ${name} ${definition}`);
     }
   }
 }

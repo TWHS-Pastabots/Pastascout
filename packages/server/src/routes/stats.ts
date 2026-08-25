@@ -38,7 +38,9 @@ statsRouter.get(
     const epa = computeEPA(allianceResults, teamNumbers, { learningRate: 0.3, passes: 3 });
 
     const matchIdsInEvent = new Set(eventMatches.map((m) => m.id));
-    const scoutingEntries = (await matchScoutingRepo.all()).filter((e) => matchIdsInEvent.has(e.matchId));
+    const scoutingEntries = (await matchScoutingRepo.all()).filter(
+      (e) => matchIdsInEvent.has(e.matchId) && !e.excludeFromStats
+    );
 
     const teamNames = new Map((await teamsRepo.all()).map((t) => [t.teamNumber, t.name]));
 
