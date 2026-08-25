@@ -34,7 +34,7 @@ export const GAME_CONFIG = {
     { id: "defense", label: "Defense" },
     { id: "shuttling", label: "Shuttling / Cycle speed" },
     { id: "driverSkill", label: "Driver skill" },
-    { id: "fieldAwareness", label: "Field awareness" },
+    { id: "fieldAwareness", label: "Human player skill" },
   ],
 } as const;
 
