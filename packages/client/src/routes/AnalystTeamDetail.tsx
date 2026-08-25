@@ -1,16 +1,26 @@
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { AutonPathView } from "../components/AutonPathView";
 
 export function AnalystTeamDetail() {
   const { teamNumber } = useParams();
   const num = Number(teamNumber);
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["match-scouting", num],
     queryFn: () => api.matchScoutingList({ teamNumber: num }),
     enabled: Number.isFinite(num),
+  });
+
+  const setExcluded = useMutation({
+    mutationFn: ({ id, excludeFromStats }: { id: string; excludeFromStats: boolean }) =>
+      api.setMatchScoutingExcluded(id, excludeFromStats),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["match-scouting", num] });
+      queryClient.invalidateQueries({ queryKey: ["stats"] });
+    },
   });
 
   return (
@@ -42,9 +52,23 @@ export function AnalystTeamDetail() {
                   </span>
                   <span className="text-slate-500">{entry.scoutName}</span>
                 </div>
-                {entry.excludeFromStats && (
-                  <p className="mb-2 text-xs font-medium text-red-400">Excluded from stats</p>
-                )}
+                <div className="mb-2 flex items-center justify-between">
+                  {entry.excludeFromStats ? (
+                    <p className="text-xs font-medium text-red-400">Excluded from stats</p>
+                  ) : (
+                    <span />
+                  )}
+                  <button
+                    type="button"
+                    disabled={setExcluded.isPending}
+                    onClick={() =>
+                      setExcluded.mutate({ id: entry.id, excludeFromStats: !entry.excludeFromStats })
+                    }
+                    className="text-xs font-medium text-slate-400 hover:text-slate-200 disabled:opacity-50"
+                  >
+                    {entry.excludeFromStats ? "Include in stats" : "Exclude from stats"}
+                  </button>
+                </div>
                 <AutonPathView
                   path={entry.autonPath}
                   startPosition={entry.auton.startPosition}

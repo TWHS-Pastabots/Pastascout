@@ -52,7 +52,6 @@ function MatchScoutingFormFields() {
 
   const [penalties, setPenalties] = useState(0);
   const [brokeDown, setBrokeDown] = useState(false);
-  const [excludeFromStats, setExcludeFromStats] = useState(false);
   const [notes, setNotes] = useState("");
   const [savedEntry, setSavedEntry] = useState<MatchScoutingEntry | null>(null);
   const [showQr, setShowQr] = useState(false);
@@ -86,7 +85,9 @@ function MatchScoutingFormFields() {
       penalties,
       brokeDown,
       notes,
-      excludeFromStats,
+      // Only an analyst can mark a report excluded, and only after the fact —
+      // see AnalystTeamDetail. New reports always start counted.
+      excludeFromStats: false,
     };
 
     await queueMatchScouting(entry);
@@ -204,17 +205,6 @@ function MatchScoutingFormFields() {
           <h2 className="font-semibold text-slate-200">Other</h2>
           <Counter label="Penalties drawn" value={penalties} onChange={setPenalties} />
           <Toggle label="Robot broke down" value={brokeDown} onChange={setBrokeDown} />
-          <div>
-            <Toggle
-              label="Exclude this report from stats"
-              value={excludeFromStats}
-              onChange={setExcludeFromStats}
-            />
-            <p className="mt-1 text-xs text-slate-500">
-              Use this if something made the report unreliable — wrong robot, missed most of the match, etc. It
-              still saves and stays visible to analysts, it just won't count toward this team's averages.
-            </p>
-          </div>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}

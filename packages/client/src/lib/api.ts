@@ -55,6 +55,11 @@ export const api = {
   },
   postMatchScouting: (entry: MatchScoutingEntry) =>
     apiFetch<{ ok: boolean; id: string }>("/api/match-scouting", { method: "POST", body: JSON.stringify(entry) }),
+  setMatchScoutingExcluded: (id: string, excludeFromStats: boolean) =>
+    apiFetch<{ ok: boolean }>(`/api/match-scouting/${id}/exclude`, {
+      method: "PATCH",
+      body: JSON.stringify({ excludeFromStats }),
+    }),
 
   pitScoutingList: (params: { teamNumber?: number } = {}) => {
     const qs = new URLSearchParams();

@@ -112,6 +112,16 @@ export const matchScoutingRepo = {
   async all(): Promise<MatchScoutingEntry[]> {
     return (await db.all("SELECT * FROM match_scouting_entries")).map(rowToMatchScouting);
   },
+  /** Returns false if no entry with that id exists, so the route can 404. */
+  async setExcludeFromStats(id: string, excludeFromStats: boolean): Promise<boolean> {
+    const existing = await db.get("SELECT id FROM match_scouting_entries WHERE id = ?", [id]);
+    if (!existing) return false;
+    await db.run("UPDATE match_scouting_entries SET exclude_from_stats = ? WHERE id = ?", [
+      excludeFromStats ? 1 : 0,
+      id,
+    ]);
+    return true;
+  },
   async upsert(e: MatchScoutingEntry) {
     await db.run(
       `INSERT INTO match_scouting_entries
