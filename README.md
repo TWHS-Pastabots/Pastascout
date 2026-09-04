@@ -27,6 +27,7 @@ npm install
 ```
 
 ## Running it
+go to https://twhs-pastabots.github.io/Pastascout/ 
 
 Two dev servers, in separate terminals:
 
